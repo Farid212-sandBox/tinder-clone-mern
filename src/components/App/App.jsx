@@ -4,7 +4,6 @@ import './App.css'
 
 const App =() => (
 	<div className="app">
-		<h1>Tinder clone MERN</h1>
 		<Router>
 			<Switch>
 				{indexRoutes.map((el, key) => (

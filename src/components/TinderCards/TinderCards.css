@@ -20,7 +20,7 @@
     border-radius: 0.25em;
 }
 
-.TinderCards__cardContainer{
+.tinderCards__cardContainer{
     display: flex;
     justify-content: center;
     margin-top: 5vh;
