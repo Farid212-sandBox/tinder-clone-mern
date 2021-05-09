@@ -1,35 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import TinderCard from 'react-tinder-card'
-import database from '../../firebase'
 import './TinderCards.css'
+import axios from '../../contants/axios'
 
 function TinderCards() {
-    const [people, setPeople] = useState([
-        {
-            name: 'Luffy',
-            url: 'https://cdnb.artstation.com/p/assets/images/images/025/523/763/large/flat-bunnyy-luffy.jpg?1586079511'
-        },
-        {
-            name: 'Zoro',
-            url: 'https://cdna.artstation.com/p/assets/images/images/025/524/306/large/flat-bunnyy-zoro.jpg?1586081431'
-        },
-        {
-            name: 'Chopper',
-            url: 'https://cdnb.artstation.com/p/assets/images/images/025/524/349/large/flat-bunnyy-chopper.jpg?1586081662'
-        },
-        {
-            name: 'Sanji',
-            url: 'https://cdna.artstation.com/p/assets/images/images/025/524/272/large/flat-bunnyy-sanji.jpg?1586081294'
-        },
-    ])
+    const [people, setPeople] = useState([])
 
-    // useEffect(()=>{
-    //     database
-    //     .collection('people')
-    //     .onSnapshot((snapshot) => 
-    //         setPeople(snapshot.docs.map(doc => doc.data()))
-    //     )
-    // }, [])
+    useEffect(()=>{
+        async function fetchData (){
+            const req = await axios.get('/tinder/cards')
+            setPeople(req.data)
+        }
+
+        fetchData()
+    }, [])
 
     const swiped = (direction, nameToDelete) =>{
         console.log("removing" + nameToDelete) 
@@ -44,6 +28,7 @@ function TinderCards() {
         <div className="tinderCards">
             <div className="tinderCards__cardContainer">
                 {people.map(person=>(
+                    person.name?
                     <TinderCard
                         className="swipe"
                         key={person.name}
@@ -52,12 +37,13 @@ function TinderCards() {
                         onCardLeftScreen={()=>outOfFrame(person.name)}
                     >
                         <div 
-                            style={{ backgroundImage: `url(${person.url})`}}
+                            style={{ backgroundImage: `url(${person.imgUrl})`}}
                             className="card"
                         >
                             <h3>{person.name}</h3>
                         </div>
                     </TinderCard>
+                    : null
                 ))}
             </div>
         </div>
